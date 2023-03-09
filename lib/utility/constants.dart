@@ -6,10 +6,10 @@ const String deals = "Deals";
 const String products = "Products";
 const String activities = "Activities";
 const String contacts = "Contacts";
-const String companies = "Companies";
 const String tasks = "Tasks";
 const String meetings = "Meetings";
 const String calls = "Calls";
+const String accounts = "Accounts";
 
 const String light = "Light";
 const String dark = "Dark";

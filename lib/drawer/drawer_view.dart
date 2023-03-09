@@ -43,8 +43,8 @@ class _DrawerViewState extends State<DrawerView> {
                 drawerListTile(Icons.people, contacts, changeIndexOfDashBoard: () {
                   GeneralController.to.dashBoardTitle.value = contacts;
                 }),
-                drawerListTile(Icons.calculate_rounded, companies, changeIndexOfDashBoard: () {
-                  GeneralController.to.dashBoardTitle.value = companies;
+                drawerListTile(Icons.calculate_rounded, accounts, changeIndexOfDashBoard: () {
+                  GeneralController.to.dashBoardTitle.value = accounts;
                 }),
               ],
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../bottom_view/common_bottom_string_view.dart';
+import '../../common_widgets/common_product_textfield.dart';
 import '../../common_widgets/common_textfield.dart';
 import '../../common_widgets/common_widgets_view.dart';
 import '../../utility/color_utility.dart';
@@ -285,12 +286,31 @@ class _MyTableWidgetState extends State<MyTableWidget> {
     for (int i = 0; i < 5; i++) {
       _rows.add(DataRow(
         cells: [
-          DataCell(TextFormField()),
-          DataCell(TextFormField()),
-          DataCell(TextFormField()),
-          DataCell(TextFormField()),
-          DataCell(TextFormField()),
-          DataCell(TextFormField()),
+          DataCell(CommonDropdownView(listData: const ["aaaaa","sssss","ddddd"],selectedVal: "sssss",changeCallback: (){},)),
+          DataCell(CommonDropdownView(listData: const ["aaaaaaa","sssssaa","dddddaa"],selectedVal: "sssssaa",changeCallback: (){},)),
+          DataCell(CommonProductTextField(
+            selectionCallBack: (String val){},
+            fieldHeader: "",
+            selectedVal: "",
+          )),
+          DataCell(CommonProductTextField(
+            selectionCallBack: (String val){},
+            fieldHeader: "",
+            selectedVal: "",
+          )),
+          DataCell(CommonProductTextField(
+            selectionCallBack: (String val){},
+            fieldHeader: "",
+            selectedVal: "",
+          )),
+          DataCell(CommonProductTextField(
+            selectionCallBack: (String val){},
+            fieldHeader: "",
+            selectedVal: "",
+          )), DataCell(InkWell(
+            onTap: (){},
+            child: const Icon(Icons.close,color: dangerColor),
+          )),
         ],
       ));
     }
@@ -301,13 +321,14 @@ class _MyTableWidgetState extends State<MyTableWidget> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
-        columns: const [
-          DataColumn(label: Text('Column 1')),
-          DataColumn(label: Text('Column 2')),
-          DataColumn(label: Text('Column 3')),
-          DataColumn(label: Text('Column 4')),
-          DataColumn(label: Text('Column 5')),
-          DataColumn(label: Text('Column 6')),
+        columns: [
+          DataColumn(label: commonHeaderTitle(title: "Category",fontSize: 1.2,fontWeight: 2)),
+          DataColumn(label: commonHeaderTitle(title: "Product",fontSize: 1.2,fontWeight: 2)),
+          DataColumn(label: commonHeaderTitle(title: "List Price(₹)",fontSize: 1.2,fontWeight: 2)),
+          DataColumn(label: commonHeaderTitle(title: "Quantity",fontSize: 1.2,fontWeight: 2)),
+          DataColumn(label: commonHeaderTitle(title: "Discount(%)(₹)",fontSize: 1.2,fontWeight: 2)),
+          DataColumn(label: commonHeaderTitle(title: "Total(₹)",fontSize: 1.2,fontWeight: 2)),
+          DataColumn(label: commonHeaderTitle(title: "",fontSize: 1.2,fontWeight: 2)),
         ],
         rows: _rows,
       ),

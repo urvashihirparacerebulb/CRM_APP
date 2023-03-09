@@ -1,5 +1,6 @@
 import 'package:crm_app/common_widgets/common_widgets_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../bottom_view/common_bottom_string_view.dart';
@@ -177,6 +178,10 @@ class _AddNewLeadViewState extends State<AddNewLeadView> {
                   CommonTextFiled(
                     fieldTitleText: "Mobile No",
                     hintText: "Mobile No",
+                    keyboardType: TextInputType.number,
+                    inputFormatter: [
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     onChangedFunction: (String value){
                     },
                     validationFunction: (String value) {
@@ -189,6 +194,10 @@ class _AddNewLeadViewState extends State<AddNewLeadView> {
                   CommonTextFiled(
                       fieldTitleText: "Phone No",
                       hintText: "Phone No",
+                      keyboardType: TextInputType.number,
+                      inputFormatter: [
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
                       onChangedFunction: (String value){
                       },
                       validationFunction: (String value) {

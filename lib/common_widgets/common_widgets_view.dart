@@ -104,7 +104,7 @@ PreferredSize commonSearchAppBar({BuildContext? context,
       }));
 }
 
-commonHeaderTitle({String title = "",
+Text commonHeaderTitle({String title = "",
   double height = 1.0,
   double fontSize = 1,int fontWeight = 0,
   Color color = whiteColor,

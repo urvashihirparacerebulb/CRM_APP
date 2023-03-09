@@ -7,6 +7,9 @@ import 'package:get/get.dart';
 import '../common_widgets/common_widgets_view.dart';
 import '../controllers/general_controller.dart';
 import '../drawer/drawer_view.dart';
+import '../modules/account/account_list_view.dart';
+import '../modules/contacts/contact_list_view.dart';
+import '../modules/product/product_list_view.dart';
 import '../utility/assets_utility.dart';
 import '../utility/color_utility.dart';
 import '../utility/constants.dart';
@@ -47,6 +50,9 @@ class _DashboardViewState extends State<HomeScreen> {
       body: Obx(() => GeneralController.to.dashBoardTitle.value == dashboard ? const DashboardView() :
       GeneralController.to.dashBoardTitle.value == leads ? const LeadsView() :
       GeneralController.to.dashBoardTitle.value == deals ? const DealsView() :
+      GeneralController.to.dashBoardTitle.value == products ? const ProductListView() :
+      GeneralController.to.dashBoardTitle.value == contacts ? const ContactView() :
+      GeneralController.to.dashBoardTitle.value == accounts ? const AccountListView() :
       Container()),
     );
   }

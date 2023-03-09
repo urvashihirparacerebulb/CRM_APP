@@ -17,6 +17,7 @@ class CommonTextFiled extends StatefulWidget {
   final String hintText;
   final bool isPassword;
   final bool isRequired;
+  final bool isHeader;
   final TextEditingController textEditingController;
   final Function? validationFunction;
   final int? maxLength;
@@ -45,6 +46,7 @@ class CommonTextFiled extends StatefulWidget {
         required this.hintText,
         this.isPassword = false,
         this.isRequired = true,
+        this.isHeader = true,
         required this.textEditingController,
         this.validationFunction,
         this.maxLength,
@@ -92,9 +94,10 @@ class _CommonTextFiledState extends State<CommonTextFiled> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        commonVerticalSpacing(),
-        commonHeaderTitle(title: widget.fieldTitleText, isChangeColor: true, color: blackColor, fontSize: 1.0,fontWeight: 2),
-        commonVerticalSpacing(spacing: 8),
+        commonVerticalSpacing(spacing: widget.isHeader ? 10 : 0),
+        if(widget.isHeader)
+          commonHeaderTitle(title: widget.fieldTitleText, isChangeColor: true, color: blackColor, fontSize: 1.0,fontWeight: 2),
+        commonVerticalSpacing(spacing: widget.isHeader ? 8 : 0),
         Container(
           decoration: neurmorphicBoxDecoration,
           child: TextFormField(
