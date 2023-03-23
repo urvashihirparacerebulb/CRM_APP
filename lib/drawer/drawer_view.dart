@@ -1,8 +1,11 @@
+import 'package:crm_app/modules/calls/call_list_view.dart';
+import 'package:crm_app/modules/meeting/meeting_list_view.dart';
 import 'package:crm_app/utility/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/general_controller.dart';
+import '../modules/tasks/task_list_view.dart';
 import '../utility/color_utility.dart';
 import '../utility/theme_utils.dart';
 
@@ -37,7 +40,7 @@ class _DrawerViewState extends State<DrawerView> {
                 drawerListTile(Icons.people, products, changeIndexOfDashBoard: () {
                   GeneralController.to.dashBoardTitle.value = products;
                 }),
-                drawerListTile(Icons.local_activity, activities, changeIndexOfDashBoard: () {
+                drawerListTile(Icons.local_activity, activities, isExpanded: true, changeIndexOfDashBoard: () {
                   GeneralController.to.dashBoardTitle.value = activities;
                 }),
                 drawerListTile(Icons.people, contacts, changeIndexOfDashBoard: () {
@@ -55,12 +58,41 @@ class _DrawerViewState extends State<DrawerView> {
   }
 
   Widget drawerListTile(IconData image, String title,
-      {Widget? screenWidget, Function? changeIndexOfDashBoard}) {
+      {Widget? screenWidget, Function? changeIndexOfDashBoard, bool isExpanded = false}) {
     return Obx(() {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 0),
         color: (GeneralController.to.dashBoardTitle.value == title ? ourBlueColor : whiteColor),
-        child: ListTile(
+        child: isExpanded ? ExpansionTile(
+          title: const Text(activities),
+          // backgroundColor: ourBlueColor,
+          leading: const Icon(Icons.person), //add icon
+          childrenPadding: const EdgeInsets.only(left:60), //children padding
+          children: [
+            ListTile(
+              title: const Text(tasks),
+              onTap: (){
+                Get.to(() => const TaskListView());
+              },
+            ),
+
+            ListTile(
+              title: const Text(meetings),
+              onTap: (){
+                Get.to(() => const MeetingListView());
+              },
+            ),
+
+            ListTile(
+              title: const Text(calls),
+              onTap: (){
+                Get.to(() => const CallListView());
+              },
+            ),
+
+            //more child menu
+          ],
+        ) : ListTile(
           contentPadding: const EdgeInsets.all(0.0),
           onTap: () {
             Get.back();

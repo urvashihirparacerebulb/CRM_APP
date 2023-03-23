@@ -50,7 +50,8 @@ String? tempMethodType;
 
 String getLoginDataValue(){
   if(getLoginData() != null){
-    return getLoginData()!.data?.token ?? "";
+    // return getLoginData()!.data?.token ?? "";
+    return "";
   }
   return "";
 }
@@ -85,19 +86,19 @@ apiServiceCall({
     if (tempIsProgressShow != null && tempIsProgressShow!) {
       showProgressDialog();
     }
-    Map<String, dynamic> headerParameters;
-    if (getLoginDataValue() == "") {
-      headerParameters = {
-        'Access-Control-Allow-Origin': '*',
-        // "Authorization": getLoginData() != null
-        //     ? getLoginData()!.token != null
-        //         ? "Bearer ${getLoginData()!.token}"
-        //         : ""
-        //     : "",
-      };
-    } else {
-      headerParameters = {"Authorization": "Bearer ${getLoginDataValue()}"};
-    }
+    Map<String, dynamic> headerParameters = {};
+    // if (getLoginDataValue() == "") {
+    //   headerParameters = {
+    //     'Access-Control-Allow-Origin': '*',
+    //     // "Authorization": getLoginData() != null
+    //     //     ? getLoginData()!.token != null
+    //     //         ? "Bearer ${getLoginData()!.token}"
+    //     //         : ""
+    //     //     : "",
+    //   };
+    // } else {
+    //   headerParameters = {"Authorization": "Bearer ${getLoginDataValue()}"};
+    // }
 
     try {
       Response response;
@@ -115,7 +116,7 @@ apiServiceCall({
       } else {
         response = await APIProvider.getDio().post(tempServiceUrl!,
             data: tempFormData ?? tempParams,
-            options: Options(headers: headerParameters));
+        );
       }
 
       if (response.statusCode == 200 || response.statusCode == 201) {

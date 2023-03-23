@@ -84,24 +84,22 @@ PreferredSize commonSearchAppBar({BuildContext? context,
   Widget? leadingWidget, String? title, Widget? actionIcon}) {
   return PreferredSize(
       preferredSize: const Size.fromHeight(56.0),
-      child: Obx(() {
-        return AppBar(
-          centerTitle: true,
-          // this is all you need
-          backgroundColor: whiteColor,
-          // or use Brightness.dark
-          leading: leadingWidget!,
-          elevation: 0.0,
-          automaticallyImplyLeading: false,
-          titleSpacing: 0,
-          title: Text(
-            isNotEmptyString(title) ? title! : GeneralController.to.dashBoardTitle.value,
-            textAlign: TextAlign.center,
-            style: black18PxBold,
-          ),
-          actions: [actionIcon ?? Container()],
-        );
-      }));
+      child: AppBar(
+        centerTitle: true,
+        // this is all you need
+        backgroundColor: whiteColor,
+        // or use Brightness.dark
+        leading: leadingWidget!,
+        elevation: 0.0,
+        automaticallyImplyLeading: false,
+        titleSpacing: 0,
+        title: Obx(() => Text(
+          isNotEmptyString(title) ? GeneralController.to.accountTitle.value : GeneralController.to.dashBoardTitle.value,
+          textAlign: TextAlign.center,
+          style: black18PxBold,
+        )),
+        actions: [actionIcon ?? Container()],
+      ));
 }
 
 Text commonHeaderTitle({String title = "",
@@ -236,7 +234,8 @@ Widget commonFillButtonView(
             style: black15PxW800.copyWith(
                 color: whiteColor,
                 fontWeight: isLightButton ? FontWeight.w500 : FontWeight.bold,
-                fontSize: height! >= 50.0 ? 16 : 14),
+                fontSize: height! >= 50.0 ? 16 : 14
+            ),
           )
       )
   );
@@ -257,7 +256,9 @@ commonDecoratedTextView({String title = "", bool isChangeColor = false,double bo
             color: blackColor.withOpacity(0.4)
         ),
         commonHorizontalSpacing(),
-        Icon(Icons.keyboard_arrow_down,color: ConvertTheme.convertTheme.getWhiteToFontColor(),)
+        Icon(Icons.keyboard_arrow_down,
+          color: ConvertTheme.convertTheme.getWhiteToFontColor()
+        )
       ],
     ),
   );

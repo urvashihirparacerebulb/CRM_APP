@@ -28,32 +28,56 @@ class LoginResponseModel {
 
 class LoginResponse {
   LoginResponse({
-    this.manageUserId,
-    this.uniqueId,
-    this.name,
-    this.email,
-    this.token,
+    this.userlogindata,
   });
 
-  int? manageUserId;
-  String? uniqueId;
-  String? name;
-  String? email;
-  String? token;
+  UserLoginData? userlogindata;
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
-    manageUserId: json["manage_user_id"],
-    uniqueId: json["unique_id"],
-    name: json["name"],
-    email: json["email"],
-    token: json["token"],
+    userlogindata: UserLoginData.fromJson(json["userlogindata"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "manage_user_id": manageUserId,
-    "unique_id": uniqueId,
+    "userlogindata": userlogindata?.toJson(),
+  };
+}
+
+class UserLoginData {
+  UserLoginData({
+    required this.username,
+    required this.randomId,
+    required this.name,
+    required this.id,
+    required this.groupId,
+    required this.title,
+    required this.loggedIn,
+  });
+
+  String username;
+  String randomId;
+  String name;
+  int id;
+  int groupId;
+  String title;
+  int loggedIn;
+
+  factory UserLoginData.fromJson(Map<String, dynamic> json) => UserLoginData(
+    username: json["username"],
+    randomId: json["random_ID"],
+    name: json["name"],
+    id: json["id"],
+    groupId: json["group_id"],
+    title: json["title"],
+    loggedIn: json["logged_in"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "username": username,
+    "random_ID": randomId,
     "name": name,
-    "email": email,
-    "token": token,
+    "id": id,
+    "group_id": groupId,
+    "title": title,
+    "logged_in": loggedIn,
   };
 }

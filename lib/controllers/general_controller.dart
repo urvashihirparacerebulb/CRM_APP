@@ -13,6 +13,7 @@ class GeneralController extends GetxController {
 
   RxBool isDarkMode = false.obs;
   RxString dashBoardTitle = dashboard.obs;
+  RxString accountTitle = accountInformation.obs;
 }
 
 void errorHandling(dio.Response<dynamic> response) {

@@ -1,21 +1,33 @@
-import 'package:crm_app/modules/deal/add_new_deal_view.dart';
-import 'package:crm_app/utility/color_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../common_widgets/common_widgets_view.dart';
-import '../../utility/screen_utility.dart';
 
-class DealsView extends StatefulWidget {
-  const DealsView({Key? key}) : super(key: key);
+import '../../common_widgets/common_widgets_view.dart';
+import '../../utility/color_utility.dart';
+import '../../utility/screen_utility.dart';
+import 'add_new_task_view.dart';
+
+class TaskListView extends StatefulWidget {
+  const TaskListView({Key? key}) : super(key: key);
 
   @override
-  State<DealsView> createState() => _DealsViewState();
+  State<TaskListView> createState() => _TaskListViewState();
 }
 
-class _DealsViewState extends State<DealsView> {
+class _TaskListViewState extends State<TaskListView> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return commonStructure(
+        context: context,
+        appBar: commonAppbar(context: context,title: "Tasks",
+            centerTitle: true,
+            isLeadingCCustom: true,
+            leadingWidget: InkWell(
+                onTap: (){
+                  Get.back();
+                },
+                child: const Icon(Icons.arrow_back_ios_new_outlined,color: blackColor))
+        ),
+        child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
@@ -23,14 +35,14 @@ class _DealsViewState extends State<DealsView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              commonHeaderTitle(title: "All Deals", fontSize: isTablet() ? 1.5 : 1.3, fontWeight: 4,isChangeColor: true,color: greyColor),
+              commonHeaderTitle(title: "All Tasks", fontSize: isTablet() ? 1.5 : 1.3, fontWeight: 4,isChangeColor: true,color: greyColor),
               commonFillButtonView(
                   context: context,
-                  title: "+ Deal",
-                  width: 70,
+                  title: "+ Task",
+                  width: 90,
                   height: 35,
                   tapOnButton: () {
-                    Get.to(() => const AddNewDealView());
+                    Get.to(() => const AddNewTaskView());
                   },
                   isLoading: false)
             ],
@@ -45,54 +57,48 @@ class _DealsViewState extends State<DealsView> {
                 padding: const EdgeInsets.only(left: 15,top: 8,bottom: 8,right: 8),
                 decoration: neurmorphicBoxDecoration,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        commonHeaderTitle(title: "DEAL NAME", fontSize: 1.3,fontWeight: 2),
-                        Switch(
-                          activeColor: ourBlueColor,
-                          activeTrackColor: Colors.cyan,
-                          inactiveThumbColor: Colors.blueGrey.shade600,
-                          inactiveTrackColor: Colors.grey.shade400,
-                          splashRadius: 50.0,
-                          value: true,
-                          onChanged: (value){
-
-                          },
-                        ),
-
+                        commonHeaderTitle(title: "TASK NAME", fontSize: 1.3,fontWeight: 2),
+                        commonHeaderTitle(title: "STATUS", fontSize: 1.1),
                       ],
                     ),
+                    commonVerticalSpacing(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        commonHeaderTitle(title: "COMPANY NAME", fontSize: 1),
-                        commonHeaderTitle(title: "ACCOUNT OWNER", fontSize: 1),
+                        commonHeaderTitle(title: "COMPANY", fontSize: 1.1),
+                        commonHeaderTitle(title: "PRIORITY", fontSize: 1.1),
                       ],
                     ),
-                    commonVerticalSpacing(spacing: 12),
+                    commonVerticalSpacing(),
+                    commonHeaderTitle(title: "RELATED TO", fontSize: 1.1),
+                    commonVerticalSpacing(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        commonHeaderTitle(title: "STAGE", fontSize: 1),
+                        commonHeaderTitle(title: "OWNER", fontSize: 1),
                         Row(
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey.shade200
-                              ),
-                                child: const Icon(Icons.edit,color: ourBlueColor,size: 20,)),
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.yellow.shade800
+                                ),
+                                child: const Icon(Icons.edit,color: whiteColor,size: 20,)),
                             commonHorizontalSpacing(),
                             Container(
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
-                                    color: Colors.grey.shade200
+                                    color: Colors.redAccent.shade200
                                 ),
-                                child: const Icon(Icons.delete,color: ourBlueColor,size: 20,))
+                                child: const Icon(Icons.delete_outline,color: whiteColor,size: 20,))
                           ],
                         )
                       ],
@@ -100,9 +106,10 @@ class _DealsViewState extends State<DealsView> {
                   ],
                 ),
               );
-          },))
+            },))
         ],
       ),
+    )
     );
   }
 }

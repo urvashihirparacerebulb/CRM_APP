@@ -1,8 +1,7 @@
-import 'package:crm_app/home/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../common_widgets/common_textfield.dart';
 import '../common_widgets/common_widgets_view.dart';
+import '../controllers/authrntication_controller.dart';
 import '../utility/assets_utility.dart';
 import '../utility/constants.dart';
 
@@ -55,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       return value.toString().isEmpty
                           ? notEmptyFieldMessage
                           : null;
-                    },),
+                    }),
                   commonVerticalSpacing(spacing: 25),
                   CommonTextFiled(
                     fieldTitleText: "Password",
@@ -72,15 +71,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     },),
                   commonVerticalSpacing(spacing: 25),
                   commonFillButtonView(context: context, title: "LogIn", tapOnButton: (){
-                    Get.to(() => const HomeScreen());
-                    // if (_formKey.currentState!.validate()) {
-                    //   _formKey.currentState!.save();
-                    //   Map<String, dynamic> params = {
-                    //     "email": emailController.text,
-                    //     "password": passwordController.text,
-                    //   };
-                    //   AuthenticationController.to.loginAPI(params);
-                    // }
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      Map<String, dynamic> params = {
+                        "username": emailController.text,
+                        "password": passwordController.text,
+                      };
+                      AuthenticationController.to.loginAPI(params);
+                    }
                   }, isLoading: false),
                   commonVerticalSpacing(spacing: 20),
                 ],

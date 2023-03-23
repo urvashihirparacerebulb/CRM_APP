@@ -1,12 +1,24 @@
+import 'dart:convert';
+
 import 'package:crm_app/common_widgets/common_widgets_view.dart';
+import 'package:crm_app/configurations/config_file.dart';
+import 'package:crm_app/controllers/account_controller.dart';
+import 'package:crm_app/controllers/address_controller.dart';
+import 'package:crm_app/model/address_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 
 import '../../bottom_view/common_bottom_string_view.dart';
+import '../../bottom_view/sector_bottom_view.dart';
 import '../../common_widgets/common_textfield.dart';
+import '../../configurations/api_utility.dart';
+import '../../model/account_response_model.dart';
 import '../../utility/color_utility.dart';
 import '../../utility/constants.dart';
+import '../../utility/screen_utility.dart';
+import 'add_pincode_view.dart';
 
 class AddNewAccountView extends StatefulWidget {
   const AddNewAccountView({Key? key}) : super(key: key);
@@ -18,15 +30,16 @@ class AddNewAccountView extends StatefulWidget {
 class _AddNewAccountViewState extends State<AddNewAccountView> {
 
   String selectAccType = "";
-  String selectIndustry = "";
+  Sector? selectIndustry;
   String selectTypeOfSubSector = "";
   String selectedTypeOfAddress = "";
-  String selectedPinCode = "";
   String selectedAccOwner = "";
 
+  CountryState? selectedPinCode;
   TextEditingController accNameController = TextEditingController();
   TextEditingController parentAccController = TextEditingController();
   TextEditingController accSiteController = TextEditingController();
+  TextEditingController pinCodeController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController stateController = TextEditingController();
@@ -36,6 +49,35 @@ class _AddNewAccountViewState extends State<AddNewAccountView> {
   TextEditingController websiteController = TextEditingController();
   TextEditingController faxController = TextEditingController();
   TextEditingController descController = TextEditingController();
+  // List<CountryState> arrayList = [];
+
+  @override
+  void initState() {
+    makeAPICalls();
+    super.initState();
+  }
+
+  makeAPICalls(){
+    AccountController.to.getSectorAPI(callback: (){
+      AccountController.to.getAccountOwnerAPI(callback: (){});
+    });
+  }
+
+
+  Future<List<CountryState>> getSuggestions(String query) async {
+    final response = await APIProvider.getDio().post(ApiConfig.pinCodesURL,
+      data: {
+        "searchTerm": query
+      },
+    );
+    if (response.statusCode == 200) {
+      CountryStateResponseModel countryStateResponseModel = CountryStateResponseModel.fromJson(jsonDecode(response.data));
+      final suggestions = countryStateResponseModel.data ?? [];
+      return suggestions;
+    } else {
+      throw Exception('Failed to load suggestions');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +124,7 @@ class _AddNewAccountViewState extends State<AddNewAccountView> {
                       },
                       child: commonDecoratedTextView(
                           bottom: 0,
-                          title: selectAccType == "" ? "Type" : selectAccType,
+                          title: selectAccType == "" ? "Account Type" : selectAccType,
                           isChangeColor: selectAccType == "" ? true : false
                       ),
                     ),
@@ -92,22 +134,21 @@ class _AddNewAccountViewState extends State<AddNewAccountView> {
                     InkWell(
                       onTap: (){
                         commonBottomView(context: context,
-                            child: CommonBottomStringView(
-                                hintText: "Industry *",
-                                myItems: const ["scsc qwds","sdcsc","scds"],
+                            child: Obx(() => SectorBottomView(
+                                myItems: AccountController.to.sectorList,
                                 selectionCallBack: (
-                                    String val) {
+                                    Sector val) {
                                   setState(() {
                                     selectIndustry = val;
                                   });
-                                }
-                            )
+                                }, title: 'Select Industry *',
+                            ))
                         );
                       },
                       child: commonDecoratedTextView(
                         bottom: 0,
-                          title: selectIndustry == "" ? "Industry" : selectIndustry,
-                          isChangeColor: selectIndustry == "" ? true : false
+                          title: selectIndustry == null ? "Select Industry" : selectIndustry!.name ?? "",
+                          isChangeColor: selectIndustry == null ? true : false
                       ),
                     ),
                     commonVerticalSpacing(spacing: 20),
@@ -195,7 +236,7 @@ class _AddNewAccountViewState extends State<AddNewAccountView> {
                         commonBottomView(context: context,
                             child: CommonBottomStringView(
                                 hintText: "Type of Address",
-                                myItems: const ["Client","Vendor","Channel Partner"],
+                                myItems: const ["Corporate Office","Registered Office","Branch Office","Plant/Factory","Other"],
                                 selectionCallBack: (
                                     String val) {
                                   setState(() {
@@ -235,27 +276,66 @@ class _AddNewAccountViewState extends State<AddNewAccountView> {
                               : null;
                         }),
                     commonVerticalSpacing(spacing: 20),
-                    commonHeaderTitle(title: "PinCode", isChangeColor: true, color: blackColor, fontSize: 1.0,fontWeight: 2),
-                    commonVerticalSpacing(spacing: 8),
-                    InkWell(
-                      onTap: (){
-                        commonBottomView(context: context,
-                            child: CommonBottomStringView(
-                                hintText: "PinCode",
-                                myItems: const ["35345","56665","45354","76576","68764"],
-                                selectionCallBack: (
-                                    String val) {
-                                  setState(() {
-                                    selectedPinCode = val;
-                                  });
-                                }
-                            )
-                        );
-                      },
-                      child: commonDecoratedTextView(
-                          bottom: 0,
-                          title: selectedPinCode == "" ? "PinCode" : selectedPinCode,
-                          isChangeColor: selectedPinCode == "" ? true : false
+                    SizedBox(
+                      height: 60,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              // height: 60,
+                              decoration: neurmorphicBoxDecoration,
+                              child: StatefulBuilder(
+                                builder: (context, newSetState) {
+                                  return TypeAheadField(
+                                    textFieldConfiguration: TextFieldConfiguration(
+                                        autofocus: false,
+                                        controller: pinCodeController,
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none, hintText: 'Pin Code*',
+                                          contentPadding: EdgeInsets.only(left: 15),
+                                        ),
+                                    ),
+                                    suggestionsCallback: (pattern) async {
+                                      return await getSuggestions(pattern);
+                                    },
+                                    itemBuilder: (context, CountryState suggestion) {
+                                      return ListTile(
+                                        title: Text(suggestion.pinCode ?? ""),
+                                      );
+                                    },
+                                    onSuggestionSelected: (CountryState suggestion) {
+                                      newSetState(() {
+                                        selectedPinCode = suggestion;
+                                        pinCodeController.text = selectedPinCode?.pinCode ?? "0";
+                                      });
+                                    },
+                                    suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      elevation: 8.0,
+                                      color: Theme.of(context).cardColor,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          commonHorizontalSpacing(spacing: 15),
+                          commonFillButtonView(
+                              context: context,
+                              title: "New PinCode",
+                              width: 120, height: 45,
+                              tapOnButton: () {
+                                showDialog(context: context, builder: (BuildContext context) => AddPinCodeView(doneCallback: (CountryState countryState, String pin){
+                                  AddressController.to.addNewPinCode(
+                                      cityId: countryState.id,
+                                      pinCode: pin,
+                                      callback: (){
+                                      }
+                                  );
+                                }));
+                              }, isLoading: false
+                          )
+                        ],
                       ),
                     ),
                     commonVerticalSpacing(spacing: 15),
@@ -300,7 +380,6 @@ class _AddNewAccountViewState extends State<AddNewAccountView> {
                 ),
               ),
               commonVerticalSpacing(spacing: 20),
-
               commonHeaderTitle(title: "Contact Information", isChangeColor: true, color: blackColor, fontSize: 1.5,fontWeight: 2),
               commonVerticalSpacing(),
               Container(
@@ -368,7 +447,6 @@ class _AddNewAccountViewState extends State<AddNewAccountView> {
                 ),
               ),
               commonVerticalSpacing(spacing: 20),
-
               commonHeaderTitle(title: "Other Information", isChangeColor: true, color: blackColor, fontSize: 1.5,fontWeight: 2),
               commonVerticalSpacing(),
               Container(
@@ -392,24 +470,23 @@ class _AddNewAccountViewState extends State<AddNewAccountView> {
                               : null;
                         }),
                     commonVerticalSpacing(spacing: 20),
-                    Row(
-                      children: [
-                        commonHeaderTitle(title: "Profile Photo", isChangeColor: true, color: blackColor, fontSize: 1.0,fontWeight: 2),
-                        commonHorizontalSpacing(),
-                        Container(
-                          padding: const EdgeInsets.all(24),
-                          decoration: const BoxDecoration(
-                            color: secondaryColor,
-                          ),
-                          child: Column(
-                            children: [
-                              const Icon(Icons.camera,size: 30,),
-                              commonVerticalSpacing(),
-                              commonHeaderTitle(title: "Supports JPG,PNG,JPEG", isChangeColor: true, color: greyColor, fontSize: 1.0,fontWeight: 2),
-                            ],
-                          ),
-                        )
-                      ],
+                    commonHeaderTitle(title: "Profile Photo", isChangeColor: true, color: blackColor, fontSize: 1.0,fontWeight: 2),
+                    commonVerticalSpacing(),
+                    Container(
+                      padding: const EdgeInsets.all(24),
+                      width: getScreenWidth(context),
+                      decoration: const BoxDecoration(
+                        color: secondaryColor,
+                      ),
+                      child: Column(
+                        children: [
+                          const Icon(Icons.camera,size: 30),
+                          commonVerticalSpacing(),
+                          commonHeaderTitle(title: "Select Image", isChangeColor: true, color: blackColor, fontSize: 1.2,fontWeight: 2),
+                          commonVerticalSpacing(),
+                          commonHeaderTitle(title: "Supports JPG,PNG,JPEG", isChangeColor: true, color: greyColor, fontSize: 1.0,fontWeight: 2),
+                        ],
+                      ),
                     )
                   ],
                 ),

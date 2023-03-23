@@ -10,6 +10,12 @@ const String tasks = "Tasks";
 const String meetings = "Meetings";
 const String calls = "Calls";
 const String accounts = "Accounts";
+const String accountInformation = "Account Information";
+const String accountAddress = "Address";
+const String accountContacts = "Contacts";
+const String accountNotes = "Notes";
+const String accountActivity = "Activities";
+const String accountDeals = "Deals";
 
 const String light = "Light";
 const String dark = "Dark";

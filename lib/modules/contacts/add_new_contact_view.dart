@@ -1,6 +1,9 @@
+import 'package:crm_app/utility/screen_utility.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../bottom_view/common_bottom_string_view.dart';
 import '../../common_widgets/common_textfield.dart';
@@ -33,7 +36,6 @@ class _AddContactViewState extends State<AddContactView> {
   TextEditingController pinCodeController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController stateController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
   TextEditingController perMobileController = TextEditingController();
   TextEditingController perEmailController = TextEditingController();
   TextEditingController desController = TextEditingController();
@@ -319,17 +321,37 @@ class _AddContactViewState extends State<AddContactView> {
                       }, textEditingController: stateController,
                     ),
                     commonVerticalSpacing(spacing: 20),
-                    CommonTextFiled(
-                      fieldTitleText: "Country",
-                      hintText: "Country",
-                      onChangedFunction: (String value){
-                      },
-                      validationFunction: (String value) {
-                        return value.toString().isEmpty
-                            ? notEmptyFieldMessage
-                            : null;
-                      }, textEditingController: countryController,
+                    Container(
+                      decoration: neurmorphicBoxDecoration,
+                      child: IntlPhoneField(
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                          hintText: "Country",
+                          counterText: ""
+                        ),
+                        onChanged: (phone) {
+                          if (kDebugMode) {
+                            print(phone.completeNumber);
+                          }
+                        },
+                        onCountryChanged: (country) {
+                          if (kDebugMode) {
+                            print('Country changed to: ${country.name}');
+                          }
+                        },
+                      ),
                     ),
+                    // CommonTextFiled(
+                    //   fieldTitleText: "Country",
+                    //   hintText: "Country",
+                    //   onChangedFunction: (String value){
+                    //   },
+                    //   validationFunction: (String value) {
+                    //     return value.toString().isEmpty
+                    //         ? notEmptyFieldMessage
+                    //         : null;
+                    //   }, textEditingController: countryController,
+                    // ),
                   ],
                 ),
               ),
@@ -386,24 +408,23 @@ class _AddContactViewState extends State<AddContactView> {
                               : null;
                         }),
                     commonVerticalSpacing(spacing: 20),
-                    Row(
-                      children: [
-                        commonHeaderTitle(title: "Profile Photo", isChangeColor: true, color: blackColor, fontSize: 1.0,fontWeight: 2),
-                        commonHorizontalSpacing(),
-                        Container(
-                          padding: const EdgeInsets.all(24),
-                          decoration: const BoxDecoration(
-                            color: secondaryColor,
-                          ),
-                          child: Column(
-                            children: [
-                              const Icon(Icons.camera,size: 30,),
-                              commonVerticalSpacing(),
-                              commonHeaderTitle(title: "Supports JPG,PNG,JPEG", isChangeColor: true, color: greyColor, fontSize: 1.0,fontWeight: 2),
-                            ],
-                          ),
-                        )
-                      ],
+                    commonHeaderTitle(title: "Profile Photo", isChangeColor: true, color: blackColor, fontSize: 1.0,fontWeight: 2),
+                    commonVerticalSpacing(),
+                    Container(
+                      padding: const EdgeInsets.all(24),
+                      width: getScreenWidth(context),
+                      decoration: const BoxDecoration(
+                        color: secondaryColor,
+                      ),
+                      child: Column(
+                        children: [
+                          const Icon(Icons.camera,size: 30),
+                          commonVerticalSpacing(),
+                          commonHeaderTitle(title: "Select Image", isChangeColor: true, color: blackColor, fontSize: 1.2,fontWeight: 2),
+                          commonVerticalSpacing(),
+                          commonHeaderTitle(title: "Supports JPG,PNG,JPEG", isChangeColor: true, color: greyColor, fontSize: 1.0,fontWeight: 2),
+                        ],
+                      ),
                     )
                   ],
                 ),

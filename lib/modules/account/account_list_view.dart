@@ -1,9 +1,11 @@
+import 'package:crm_app/controllers/address_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../common_widgets/common_widgets_view.dart';
 import '../../utility/color_utility.dart';
 import '../../utility/screen_utility.dart';
+import 'acc_detail_view.dart';
 import 'add_new_account_view.dart';
 
 class AccountListView extends StatefulWidget {
@@ -14,6 +16,12 @@ class AccountListView extends StatefulWidget {
 }
 
 class _AccountListViewState extends State<AccountListView> {
+
+  @override
+  void initState() {
+    AddressController.to.getAccountLists();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +46,9 @@ class _AccountListViewState extends State<AccountListView> {
             ],
           ),
           commonVerticalSpacing(),
-          Expanded(child: ListView.builder(
+          Expanded(child: Obx(() => ListView.builder(
             shrinkWrap: true,
-            itemCount: 10,
+            itemCount: AddressController.to.accountLists.length,
             itemBuilder: (context, index) {
               return Container(
                 margin: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
@@ -54,7 +62,7 @@ class _AccountListViewState extends State<AccountListView> {
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: const BoxDecoration(
-                            color: ourBlueColor
+                              color: ourBlueColor
                           ),
                           child: commonHeaderTitle(title: "C", fontSize: 1.4,fontWeight: 2,isChangeColor: true,color: whiteColor),
                         ),
@@ -64,23 +72,28 @@ class _AccountListViewState extends State<AccountListView> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                commonHeaderTitle(title: "COMPANY NAME", fontSize: 1,fontWeight: 2,isChangeColor: true,color: ourBlueColor),
-                                commonHeaderTitle(title: "Sector", fontSize: 1),
+                                InkWell(
+                                  onTap: (){
+                                    Get.to(() => const AccountDetailView());
+                                  },
+                                  child: commonHeaderTitle(title: AddressController.to.accountLists[index].name ?? "", fontSize: 1,fontWeight: 2,isChangeColor: true,color: ourBlueColor),
+                                ),
+                                commonHeaderTitle(title: AddressController.to.accountLists[index].sector ?? "", fontSize: 1),
                               ],
                             ),
                             commonVerticalSpacing(spacing: 12),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                commonHeaderTitle(title: "Account Type", fontSize: 1),
-                                commonHeaderTitle(title: "Website", fontSize: 1),
+                                commonHeaderTitle(title: AddressController.to.accountLists[index].accountType ?? "", fontSize: 1),
+                                commonHeaderTitle(title: AddressController.to.accountLists[index].website ?? "", fontSize: 1),
                               ],
                             ),
                             commonVerticalSpacing(spacing: 12),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                commonHeaderTitle(title: "ACCOUNT OWNER", fontSize: 1),
+                                commonHeaderTitle(title: AddressController.to.accountLists[index].adminName ?? "", fontSize: 1),
                                 Row(
                                   children: [
                                     Container(
@@ -91,13 +104,18 @@ class _AccountListViewState extends State<AccountListView> {
                                         ),
                                         child: const Icon(Icons.edit,color: whiteColor,size: 20,)),
                                     commonHorizontalSpacing(),
-                                    Container(
-                                        padding: const EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.redAccent.shade200
-                                        ),
-                                        child: const Icon(Icons.delete_outline,color: whiteColor,size: 20,))
+                                    InkWell(
+                                      onTap: (){
+                                        AddressController.to.deleteAccount(companyId: AddressController.to.accountLists[index].id.toString());
+                                      },
+                                      child: Container(
+                                          padding: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(5),
+                                              color: Colors.redAccent.shade200
+                                          ),
+                                          child: const Icon(Icons.delete_outline,color: whiteColor,size: 20,)),
+                                    )
                                   ],
                                 )
                               ],
@@ -109,7 +127,7 @@ class _AccountListViewState extends State<AccountListView> {
                   ],
                 ),
               );
-            },))
+            },)))
         ],
       ),
     );
