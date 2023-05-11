@@ -44,22 +44,22 @@ class LoginResponse {
 
 class UserLoginData {
   UserLoginData({
-    required this.username,
-    required this.randomId,
-    required this.name,
-    required this.id,
-    required this.groupId,
-    required this.title,
-    required this.loggedIn,
+    this.username,
+    this.randomId,
+    this.name,
+    this.id,
+    this.groupId,
+    this.title,
+    this.loggedIn,
   });
 
-  String username;
-  String randomId;
-  String name;
-  int id;
-  int groupId;
-  String title;
-  int loggedIn;
+  String? username;
+  String? randomId;
+  String? name;
+  int? id;
+  int? groupId;
+  String? title;
+  int? loggedIn;
 
   factory UserLoginData.fromJson(Map<String, dynamic> json) => UserLoginData(
     username: json["username"],

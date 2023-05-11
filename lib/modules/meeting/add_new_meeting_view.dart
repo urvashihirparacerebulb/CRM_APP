@@ -37,6 +37,37 @@ class _AddNewMeetingViewState extends State<AddNewMeetingView> {
                 },
                 child: const Icon(Icons.arrow_back_ios_new_outlined,color: blackColor))
         ),
+        bottomNavigation: ColoredBox(
+          color: textBgColor,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+                height: 60,
+                child: Row(
+                  children: [
+                    Expanded(child: commonBorderButtonView(
+                        context: context,
+                        title: "Cancel",
+                        height: 50,
+                        tapOnButton: () {
+                          Get.back();
+                        },
+                        isLoading: false)),
+                    commonHorizontalSpacing(),
+                    Expanded(child: commonFillButtonView(
+                        context: context,
+                        title: "Submit",
+                        height: 50,
+                        tapOnButton: () {
+
+                        },
+                        isLoading: false)
+                    )
+                  ],
+                )
+            ),
+          ),
+        ),
         child: ColoredBox(
           color: secondaryColor,
           child: ListView(

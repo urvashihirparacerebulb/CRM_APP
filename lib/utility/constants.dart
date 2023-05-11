@@ -16,6 +16,8 @@ const String accountContacts = "Contacts";
 const String accountNotes = "Notes";
 const String accountActivity = "Activities";
 const String accountDeals = "Deals";
+const String forgotPassword = "Forgot Password";
+const String reMemberMe = "Remember Me";
 
 const String light = "Light";
 const String dark = "Dark";

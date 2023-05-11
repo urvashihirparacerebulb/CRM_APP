@@ -5,19 +5,19 @@ import '../common_widgets/common_textfield.dart';
 import '../common_widgets/common_widgets_view.dart';
 import '../model/account_response_model.dart';
 
-class SectorBottomView extends StatefulWidget {
+class AccountBottomView extends StatefulWidget {
   final String title;
-  final List<Sector> myItems;
+  final List<AccountList> myItems;
   final Function? selectionCallBack;
-  const SectorBottomView({Key? key, required this.myItems, this.selectionCallBack, required this.title}) : super(key: key);
+  const AccountBottomView({Key? key, required this.myItems, this.selectionCallBack, required this.title}) : super(key: key);
 
   @override
-  State<SectorBottomView> createState() => _AddressBottomViewState();
+  State<AccountBottomView> createState() => _AccountBottomViewState();
 }
 
-class _AddressBottomViewState extends State<SectorBottomView> {
+class _AccountBottomViewState extends State<AccountBottomView> {
   TextEditingController searchController = TextEditingController();
-  List<Sector> searchedItems = [];
+  List<AccountList> searchedItems = [];
 
   @override
   void initState() {

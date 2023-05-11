@@ -7,40 +7,16 @@ import '../common_widgets/common_methods.dart';
 import '../configurations/api_service.dart';
 import '../configurations/config_file.dart';
 import 'package:dio/dio.dart' as dio;
-
-import '../model/account_response_model.dart';
 import '../utility/common_methods.dart';
 import 'general_controller.dart';
 
 class AddressController extends GetxController {
   static AddressController get to => Get.find();
 
-  RxList<CountryState> pinCodesList = RxList<CountryState>();
+  // RxList<CountryState> pinCodesList = RxList<CountryState>();
   RxList<CountryState> countriesList = RxList<CountryState>();
   RxList<CountryState> statesList = RxList<CountryState>();
   RxList<CountryState> citiesList = RxList<CountryState>();
-  RxList<AccountList> accountLists = RxList<AccountList>();
-
-  // Future<List<CountryState>> getPinCodesAPI({String searchString = "",Function? callback}) async {
-  //   pinCodesList.clear();
-  //   apiServiceCall(
-  //     params: {
-  //       "searchTerm": searchString
-  //     },
-  //     serviceUrl: ApiConfig.pinCodesURL,
-  //     success: (dio.Response<dynamic> response) {
-  //       CountryStateResponseModel countryStateResponseModel = CountryStateResponseModel.fromJson(jsonDecode(response.data));
-  //       pinCodesList.addAll(countryStateResponseModel.data ?? []);
-  //       return pinCodesList.value;
-  //     },
-  //     error: (dio.Response<dynamic> response) {
-  //       errorHandling(response);
-  //
-  //     },
-  //     isProgressShow: false,
-  //     methodType: ApiConfig.methodPOST,
-  //   );
-  // }
 
   void getCountriesList({Function? callback}) {
     apiServiceCall(
@@ -119,14 +95,16 @@ class AddressController extends GetxController {
     );
   }
 
-  void getAccountLists() {
-    accountLists.clear();
+  void deleteAddress({String? addressId, Function? callback}) {
     apiServiceCall(
-        params: {},
-        serviceUrl: ApiConfig.accountListURL,
+        params: {
+          "address_id": addressId
+        },
+        serviceUrl: ApiConfig.deleteAddressURL,
         success: (dio.Response<dynamic> response) {
-          AccountListResponseModel accountListResponseModel = AccountListResponseModel.fromJson(jsonDecode(response.data));
-          accountLists.addAll(accountListResponseModel.data ?? []);
+          BooleanResponseModel booleanResponseModel = BooleanResponseModel.fromJson(jsonDecode(response.data));
+          showSnackBar(title: ApiConfig.success,message: booleanResponseModel.message ?? "");
+          callback!();
         },
         error: (dio.Response<dynamic> response) {
           errorHandling(response);
@@ -136,16 +114,30 @@ class AddressController extends GetxController {
     );
   }
 
-  void deleteAccount({String? companyId}) {
+  addEditAddressAPI({bool isEdit = false, String addId = "",companyId, addressType,address,pinCode,accSite,cityId,stateId,countryId,
+    Function? callback
+  }){
+    dio.FormData formData = dio.FormData.fromMap({
+      "company_id": companyId,
+      "address_type": addressType,
+      "address": address,
+      "pincode": pinCode,
+      "account_site": accSite,
+      "city": cityId,
+      "state": stateId,
+      "country": countryId
+    });
+    if(isEdit){
+      formData.fields.add(MapEntry("addressid", addId));
+    }
     apiServiceCall(
-        params: {
-          "company_id": companyId
-        },
-        serviceUrl: ApiConfig.deleteAccountURL,
+        params: {},
+        formValues: formData,
+        serviceUrl: ApiConfig.addEditAddressURL,
         success: (dio.Response<dynamic> response) {
           BooleanResponseModel booleanResponseModel = BooleanResponseModel.fromJson(jsonDecode(response.data));
-          getAccountLists();
           showSnackBar(title: ApiConfig.success,message: booleanResponseModel.message ?? "");
+          callback!((jsonDecode(response.data))["data"]);
         },
         error: (dio.Response<dynamic> response) {
           errorHandling(response);
@@ -154,4 +146,5 @@ class AddressController extends GetxController {
         methodType: ApiConfig.methodPOST
     );
   }
+
 }

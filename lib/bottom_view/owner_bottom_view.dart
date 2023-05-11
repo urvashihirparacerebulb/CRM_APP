@@ -1,23 +1,23 @@
+import 'package:crm_app/model/login_response_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../common_widgets/common_textfield.dart';
 import '../common_widgets/common_widgets_view.dart';
-import '../model/account_response_model.dart';
 
-class SectorBottomView extends StatefulWidget {
+class OwnerBottomView extends StatefulWidget {
   final String title;
-  final List<Sector> myItems;
+  final List<UserLoginData> myItems;
   final Function? selectionCallBack;
-  const SectorBottomView({Key? key, required this.myItems, this.selectionCallBack, required this.title}) : super(key: key);
+  const OwnerBottomView({Key? key, required this.myItems, this.selectionCallBack, required this.title}) : super(key: key);
 
   @override
-  State<SectorBottomView> createState() => _AddressBottomViewState();
+  State<OwnerBottomView> createState() => _OwnerBottomViewState();
 }
 
-class _AddressBottomViewState extends State<SectorBottomView> {
+class _OwnerBottomViewState extends State<OwnerBottomView> {
   TextEditingController searchController = TextEditingController();
-  List<Sector> searchedItems = [];
+  List<UserLoginData> searchedItems = [];
 
   @override
   void initState() {

@@ -35,7 +35,7 @@ class _CommonBottomStringViewState extends State<CommonBottomStringView> {
           ,
           CommonTextFiled(
             fieldTitleText: "Search",
-            hintText: "Search",
+            hintText: "Search Here...",
             // isBorderEnable: false,
             isChangeFillColor: true,
             textEditingController: searchController,

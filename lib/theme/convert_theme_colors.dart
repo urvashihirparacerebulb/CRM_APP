@@ -17,7 +17,7 @@ class ConvertTheme{
   }
 
   Color getTextFiledBackGroundColor() {
-    return GeneralController.to.isDarkMode.value ? darkThemePrimaryColor : whiteColor;
+    return GeneralController.to.isDarkMode.value ? darkThemePrimaryColor : textBgColor;
   }
 
   Color getWhiteToFontColor() {

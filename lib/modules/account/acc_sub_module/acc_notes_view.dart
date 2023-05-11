@@ -38,6 +38,7 @@ class _AccountNotesViewState extends State<AccountNotesView> {
           CommonTextFiled(
               fieldTitleText: "Type Notes",
               hintText: "Type Notes",
+              maxLine: 6,
               textEditingController: typeNotesController,
               onChangedFunction: (String value){
               },
@@ -59,7 +60,8 @@ class _AccountNotesViewState extends State<AccountNotesView> {
                     tapOnButton: () {
 
                     },
-                    isLoading: false),
+                    isLoading: false
+                ),
                 commonHorizontalSpacing(),
                 commonBorderButtonView(
                   context: context,

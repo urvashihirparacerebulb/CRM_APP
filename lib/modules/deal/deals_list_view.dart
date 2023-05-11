@@ -1,6 +1,7 @@
 import 'package:crm_app/modules/deal/add_new_deal_view.dart';
+import 'package:crm_app/utility/assets_utility.dart';
 import 'package:crm_app/utility/color_utility.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import '../../common_widgets/common_widgets_view.dart';
 import '../../utility/screen_utility.dart';
@@ -13,21 +14,24 @@ class DealsView extends StatefulWidget {
 }
 
 class _DealsViewState extends State<DealsView> {
+
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          commonVerticalSpacing(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              commonHeaderTitle(title: "All Deals", fontSize: isTablet() ? 1.5 : 1.3, fontWeight: 4,isChangeColor: true,color: greyColor),
+              commonHeaderTitle(title: "Deals", fontSize: isTablet() ? 1.8 : 1.5,
+                  fontWeight: 3,isChangeColor: true,color: blackColor),
               commonFillButtonView(
                   context: context,
-                  title: "+ Deal",
-                  width: 70,
+                  title: "+ New",
+                  width: 80,
                   height: 35,
                   tapOnButton: () {
                     Get.to(() => const AddNewDealView());
@@ -36,68 +40,156 @@ class _DealsViewState extends State<DealsView> {
             ],
           ),
           commonVerticalSpacing(),
+          Row(
+            children: [
+              Expanded(
+                child: Neumorphic(
+                  style: const NeumorphicStyle(
+                      color: textBgColor,
+                      depth: -4,
+                      intensity: 8
+                  ),
+                  child: TextField(
+                      controller: searchController,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        hintText: "Search Here....",
+                        hintStyle: TextStyle(
+                          color: subFontColor
+                        ),
+                        suffixIcon: Icon(Icons.close),
+                        border: InputBorder.none
+                      ),
+                      onChanged: (String value){
+                      },
+                  ),
+                ),
+              ),
+              commonHorizontalSpacing(spacing: 16),
+              neuMorphicWidget(
+                radius: 0,
+                margin: 0,
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.filter_list_alt,
+                    color: subFontColor,
+                    size: 20,
+                  ),
+                ),
+              )
+            ],
+          ),
+          commonVerticalSpacing(),
           Expanded(child: ListView.builder(
             shrinkWrap: true,
             itemCount: 10,
             itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
-                padding: const EdgeInsets.only(left: 15,top: 8,bottom: 8,right: 8),
-                decoration: neurmorphicBoxDecoration,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        commonHeaderTitle(title: "DEAL NAME", fontSize: 1.3,fontWeight: 2),
-                        Switch(
-                          activeColor: ourBlueColor,
-                          activeTrackColor: Colors.cyan,
-                          inactiveThumbColor: Colors.blueGrey.shade600,
-                          inactiveTrackColor: Colors.grey.shade400,
-                          splashRadius: 50.0,
-                          value: true,
-                          onChanged: (value){
+              return neuMorphicWidget(
+                radius: 8,
+                margin: 18,
+                child: Container(
+                  padding: const EdgeInsets.only(left: 15,top: 8,bottom: 8,right: 8),
+                  decoration: BoxDecoration(
+                      color: textBgColor,
+                      borderRadius: BorderRadius.circular(8)
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      neuMorphicWidget(
+                          shape: NeumorphicShape.concave,
+                          radius: 24,
+                          margin: 0,child: Image.network("https://crm.cerebulb.com/images/company/company_logo_59485.png",
+                        height: 40,width: 40,)),
+                      commonHorizontalSpacing(spacing: 12),
+                      Expanded(child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: (){
 
-                          },
-                        ),
-
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        commonHeaderTitle(title: "COMPANY NAME", fontSize: 1),
-                        commonHeaderTitle(title: "ACCOUNT OWNER", fontSize: 1),
-                      ],
-                    ),
-                    commonVerticalSpacing(spacing: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        commonHeaderTitle(title: "STAGE", fontSize: 1),
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey.shade200
-                              ),
-                                child: const Icon(Icons.edit,color: ourBlueColor,size: 20,)),
-                            commonHorizontalSpacing(),
-                            Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.grey.shade200
+                                  },
+                                  child: commonHeaderTitle(title: "Clain oil & Gas",height: 1.2,
+                                      fontSize: 1,fontWeight: 2,isChangeColor: true,color: fontColor),
                                 ),
-                                child: const Icon(Icons.delete,color: ourBlueColor,size: 20,))
-                          ],
-                        )
-                      ],
-                    )
-                  ],
+                              ),
+                              commonHorizontalSpacing(spacing: 20),
+                              commonHeaderTitle(title: "Qualification",
+                                  fontSize: 1,fontWeight: 2,
+                                  isChangeColor: true,color: subFontColor
+                              ),
+                            ],
+                          ),
+                          commonVerticalSpacing(spacing: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              commonHeaderTitle(
+                                  title: "Impel of barcode gem script",
+                                  fontSize: 1,isChangeColor: true,color: subFontColor,align: TextAlign.start
+                              ),
+                            ],
+                          ),
+                          commonVerticalSpacing(spacing: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              commonHeaderTitle(
+                                  title: "Hitesh Patel",
+                                  fontSize: 1,isChangeColor: true,color: fontColor,fontWeight: 1,
+                              ),
+                              Row(
+                                children: [
+                                  InkWell(
+                                    onTap: (){
+                                    },
+                                    child: neuMorphicWidget(
+                                        margin: 0,
+                                        radius: 4,
+                                        child: Container(
+                                            padding: const EdgeInsets.all(3),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(4),
+                                                color: textBgColor
+                                            ),
+                                            child: Image(image: editImage,height: 20,width: 20,)
+                                        )
+                                    ),
+                                  ),
+                                  commonHorizontalSpacing(),
+                                  InkWell(
+                                    onTap: (){
+                                    },
+                                    child: neuMorphicWidget(
+                                        margin: 0,
+                                        radius: 4,
+                                        child: Container(
+                                            padding: const EdgeInsets.all(3),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: yellowColor
+                                            ),
+                                            child: Image(
+                                                image: deleteIconImage,
+                                                height: 22,width: 22
+                                            )
+                                        )
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          )
+                        ],
+                      ))
+                    ],
+                  ),
                 ),
               );
           },))

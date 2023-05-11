@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crm_app/home/home_screen.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:get/get.dart';
 
 import '../common_widgets/common_methods.dart';
@@ -14,6 +15,7 @@ import 'general_controller.dart';
 
 class AuthenticationController extends GetxController {
   static AuthenticationController get to => Get.find(); // add this
+  final advancedDrawerController = AdvancedDrawerController().obs;
 
   void loginAPI(Map<String, dynamic> params) {
     apiServiceCall(
@@ -22,7 +24,7 @@ class AuthenticationController extends GetxController {
       success: (dio.Response<dynamic> response) {
         LoginResponseModel loginResponseModel =
         LoginResponseModel.fromJson(jsonDecode(response.data));
-        showSnackBar(title: loginResponseModel.status! ? ApiConfig.success : ApiConfig.error, message: loginResponseModel.message ?? "");
+        showSnackBar(title: loginResponseModel.status! ? ApiConfig.success : ApiConfig.error, message: "Login Scusessfully");
         setObject(ApiConfig.loginPref, loginResponseModel);
         setIsLogin(isLogin: true);
         Get.offAll(() => const HomeScreen());

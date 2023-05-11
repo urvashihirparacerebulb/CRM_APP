@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 
 import '../controllers/general_controller.dart';
@@ -44,7 +44,7 @@ Widget commonStructure({
   required BuildContext context,
   required Widget child,
   PreferredSize? appBar,
-  Color bgColor = whiteColor,
+  Color bgColor = textBgColor,
   Widget? bottomNavigation,
   Widget? floatingAction,
 }) {
@@ -89,7 +89,7 @@ PreferredSize commonSearchAppBar({BuildContext? context,
         // this is all you need
         backgroundColor: whiteColor,
         // or use Brightness.dark
-        leading: leadingWidget!,
+        leading: leadingWidget ?? Container(),
         elevation: 0.0,
         automaticallyImplyLeading: false,
         titleSpacing: 0,
@@ -105,7 +105,7 @@ PreferredSize commonSearchAppBar({BuildContext? context,
 Text commonHeaderTitle({String title = "",
   double height = 1.0,
   double fontSize = 1,int fontWeight = 0,
-  Color color = whiteColor,
+  Color color = fontColor,
   bool isChangeColor = false,
   TextAlign align = TextAlign.start,
   FontStyle fontStyle = FontStyle.normal}){
@@ -130,7 +130,7 @@ void commonBottomView(
       context: context!,
       isDismissible: false,
       isScrollControlled: true,
-      backgroundColor: ConvertTheme.convertTheme.getBackGroundColor(),
+      backgroundColor: textBgColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20.0),
@@ -168,7 +168,7 @@ Widget commonBorderButtonView(
       },
       style: ElevatedButton.styleFrom(
         alignment: Alignment.center,
-        backgroundColor: ConvertTheme.convertTheme.getBackGroundColor(),
+        backgroundColor: textBgColor,
         shape: RoundedRectangleBorder(
           borderRadius: commonBorderRadius
         ),
@@ -206,9 +206,9 @@ Widget commonFillButtonView(
       required Function tapOnButton,
       required bool isLoading,
       bool isLightButton = false,
-      Color color = ourBlueColor,
+      Color color = yellowColor,
       Color? fontColor = blackColor,
-      double? height = 50.0,
+      double? height = 52.0,
       double? width}) {
   return SizedBox(
       width: width ?? MediaQuery
@@ -216,50 +216,73 @@ Widget commonFillButtonView(
           .size
           .width - (commonHorizontalPadding * 2),
       height: height,
-      child: ElevatedButton(
-          onPressed: () {
-            if (!isLoading) {
-              tapOnButton();
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            shadowColor: blackColor.withOpacity(0.8), backgroundColor: color,
-            shape: RoundedRectangleBorder(
-                borderRadius: commonButtonBorderRadius),
-            padding: EdgeInsets.symmetric(vertical: height == 50.0 ? 15 : 2),
-            elevation: 5.0,
+      child: InkWell(
+        onTap: (){
+          if (!isLoading) {
+            tapOnButton();
+          }
+        },
+        child: Neumorphic(
+          style: NeumorphicStyle(
+            color: color
           ),
-          child: Text(
-            title,
-            style: black15PxW800.copyWith(
-                color: whiteColor,
-                fontWeight: isLightButton ? FontWeight.w500 : FontWeight.bold,
-                fontSize: height! >= 50.0 ? 16 : 14
-            ),
-          )
+
+          // onPressed: () {
+          //   if (!isLoading) {
+          //     tapOnButton();
+          //   }
+          // },
+          // style: ElevatedButton.styleFrom(
+          //   shadowColor: blackColor.withOpacity(0.8), backgroundColor: color,
+          //   shape: RoundedRectangleBorder(
+          //       borderRadius: commonButtonBorderRadius),
+          //   padding: EdgeInsets.symmetric(vertical: height == 50.0 ? 15 : 2),
+          //   elevation: 5.0,
+          // ),
+            child: Center(
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: black15PxW800.copyWith(
+                    color: blackColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: height! >= 50.0 ? 16 : 14
+                ),
+              ),
+            )
+        ),
       )
   );
 }
 
-commonDecoratedTextView({String title = "", bool isChangeColor = false,double bottom = 25}){
-  return Container(
-    padding: const EdgeInsets.all(12),
-    margin: EdgeInsets.only(bottom: bottom),
-    decoration: neurmorphicBoxDecoration,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        commonHeaderTitle(
-            title: title,
-            isChangeColor: isChangeColor,
-            fontSize: isTablet() ? 1.4 : 1.1,
-            color: blackColor.withOpacity(0.4)
+commonDecoratedTextView({String title = "", bool isChangeColor = false,double bottom = 16}){
+  return Padding(
+    padding: EdgeInsets.only(bottom: bottom),
+    child: SizedBox(
+      height: 50,
+      child: neuMorphicWidget(
+        // padding: const EdgeInsets.all(12),
+        // margin: EdgeInsets.only(bottom: bottom),
+        // decoration: neurmorphicBoxDecoration,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              commonHeaderTitle(
+                  title: title,
+                  isChangeColor: isChangeColor,
+                  fontSize: isTablet() ? 1.4 : 1.1,
+                  color: subFontColor
+              ),
+              commonHorizontalSpacing(),
+              Icon(Icons.keyboard_arrow_down,
+                  color: ConvertTheme.convertTheme.getWhiteToFontColor()
+              )
+            ],
+          ),
         ),
-        commonHorizontalSpacing(),
-        Icon(Icons.keyboard_arrow_down,
-          color: ConvertTheme.convertTheme.getWhiteToFontColor()
-        )
-      ],
+      ),
     ),
   );
 }
@@ -288,7 +311,7 @@ PreferredSize commonAppbar({BuildContext? context,
     preferredSize: const Size.fromHeight(56.0),
     child: Obx(() {
       return AppBar(
-        backgroundColor: ConvertTheme.convertTheme.getBackGroundColor(),
+        backgroundColor: textBgColor,
         centerTitle: centerTitle,
         elevation: 0.0,
         title: Padding(
@@ -312,4 +335,22 @@ commonVerticalSpacing({double spacing = 10}){
 
 commonHorizontalSpacing({double spacing = 10}){
   return SizedBox(width: spacing);
+}
+
+neuMorphicWidget({Widget? child, double radius = 8,double margin = 12,NeumorphicShape shape = NeumorphicShape.flat}){
+  return Neumorphic(
+      margin: EdgeInsets.only(top: margin),
+      style: NeumorphicStyle(
+        color: textBgColor,
+        shape: shape,
+        depth: 5,
+        // surfaceIntensity: 1,
+        intensity: 0.9,
+        boxShape:
+        NeumorphicBoxShape.roundRect(BorderRadius.circular(radius)),
+        //border: NeumorphicBorder()
+      ),
+      // padding: const EdgeInsets.all(12.0),
+      child: child!
+  );
 }

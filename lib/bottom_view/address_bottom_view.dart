@@ -37,7 +37,7 @@ class _AddressBottomViewState extends State<AddressBottomView> {
           commonVerticalSpacing(spacing: 15),
           CommonTextFiled(
             fieldTitleText: "Search",
-            hintText: "Search",
+            hintText: "Search Here...",
             // isBorderEnable: false,
             isChangeFillColor: true,
             textEditingController: searchController,

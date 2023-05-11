@@ -31,7 +31,7 @@ class _CommonProductTextFieldState extends State<CommonProductTextField> {
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           contentPadding: EdgeInsets.only(top: 5,left: 8,right: 8),
-          hintText: 'Search',
+          hintText: 'Search Here...',
           hintStyle: TextStyle(fontSize: 14)
         ),
       ),

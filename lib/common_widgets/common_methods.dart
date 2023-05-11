@@ -21,6 +21,30 @@ bool readDataFromPref(String key) {
   return getPreferences.read(key) ?? false;
 }
 
+setRememberedEmail({required String email}) {
+  getPreferences.write('email', email);
+}
+
+String getRememberedEmail() {
+  return (getPreferences.read('email') ?? "");
+}
+
+setRememberedPassword({required String password}) {
+  getPreferences.write('password', password);
+}
+
+String getRememberedPassword() {
+  return (getPreferences.read('password') ?? "");
+}
+
+setIsRememberMe({required bool isRemember}) {
+  getPreferences.write('isRememberMe', isRemember);
+}
+
+bool getIsRememberMe() {
+  return (getPreferences.read('isRememberMe') ?? false);
+}
+
 showSnackBar({required String title, required String message}) {
   return Fluttertoast.showToast(
       msg: message,
@@ -33,5 +57,6 @@ showSnackBar({required String title, required String message}) {
           ? Colors.green
           : Colors.red,
       textColor: Colors.white,
-      fontSize: 12.0);
+      fontSize: 12.0
+  );
 }
