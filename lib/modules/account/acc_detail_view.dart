@@ -7,7 +7,8 @@ import '../../utility/assets_utility.dart';
 import '../../utility/color_utility.dart';
 
 class AccountDetailView extends StatefulWidget {
-  const AccountDetailView({Key? key}) : super(key: key);
+  final String accId;
+  const AccountDetailView({Key? key, required this.accId}) : super(key: key);
 
   @override
   State<AccountDetailView> createState() => _AccountDetailViewState();
@@ -16,6 +17,18 @@ class AccountDetailView extends StatefulWidget {
 class _AccountDetailViewState extends State<AccountDetailView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isAccStatus = false;
+
+  @override
+  void initState() {
+    getAccDetail();
+    super.initState();
+  }
+
+  getAccDetail(){
+    AccountController.to.getAccountDetail(accId: widget.accId,callback: (){
+
+    });
+  }
 
   expandedView({String title = "", subTitle = ""}){
     return Expanded(child: Column(
@@ -87,11 +100,12 @@ class _AccountDetailViewState extends State<AccountDetailView> {
                       neuMorphicWidget(
                           shape: NeumorphicShape.concave,
                           radius: 24,
-                          margin: 0,child: Container(color: Colors.grey.shade300,
+                          margin: 0,child: Container(
+                           color: Colors.grey.shade300,
                           height: 40,width: 40,)
                       ),
                       commonHorizontalSpacing(spacing: 10),
-                      commonHeaderTitle(title: "Cairn Oil and Gas",height: 1.2,
+                      commonHeaderTitle(title: AccountController.to.accountDetail.value.data?.name ?? "",height: 1.2,
                           fontSize: 1.15,fontWeight: 2,isChangeColor: true,color: fontColor)
                     ],
                   ),
@@ -713,79 +727,81 @@ class _AccountDetailViewState extends State<AccountDetailView> {
                   Obx(() => AccountController.to.isDealsExpanded.value ? Column(
                     children: [
                       commonVerticalSpacing(spacing: 20),
-                      ListView(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          subExpandedView(title: "Deal Name", subTitle: "Performance Monitoring System"),
-                          commonVerticalSpacing(),
-                          subExpandedView(title: "Company Name", subTitle: "JSW Steel Limited"),
-                          commonVerticalSpacing(),
-                          subExpandedView(title: "Account Owner", subTitle: "Hitesh Patel"),
-                          commonVerticalSpacing(),
-                          subExpandedView(title: "Stage", subTitle: "Proposal/Price Quote"),
-                          commonVerticalSpacing(),
-                          Row(
-                            children: [
-                              Expanded(flex: 3,child: commonHeaderTitle(title: "Status",height: 1.2,
-                                  fontSize: 1.2,fontWeight: 1,isChangeColor: true,color: subFontColor)),
-                              Expanded(flex: 4,child: CupertinoSwitch(
-                                // overrides the default green color of the track
-                                activeColor: Colors.pink.shade200,
-                                // color of the round icon, which moves from right to left
-                                thumbColor: blackColor,
-                                // when the switch is off
-                                trackColor: Colors.black12,
-                                // boolean variable value
-                                value: isAccStatus,
-                                // changes the state of the switch
-                                onChanged: (value) => setState(() => isAccStatus = value),
-                              ),),
-                              Expanded(flex: 2,child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  InkWell(
-                                    onTap: (){
-                                    },
-                                    child: neuMorphicWidget(
-                                        margin: 0,
-                                        radius: 4,
-                                        child: Container(
-                                            padding: const EdgeInsets.all(3),
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(4),
-                                                color: textBgColor
-                                            ),
-                                            child: Image(image: editImage,height: 20,width: 20,)
-                                        )
+                      Expanded(
+                        child: ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            subExpandedView(title: "Deal Name", subTitle: "Performance Monitoring System"),
+                            commonVerticalSpacing(),
+                            subExpandedView(title: "Company Name", subTitle: "JSW Steel Limited"),
+                            commonVerticalSpacing(),
+                            subExpandedView(title: "Account Owner", subTitle: "Hitesh Patel"),
+                            commonVerticalSpacing(),
+                            subExpandedView(title: "Stage", subTitle: "Proposal/Price Quote"),
+                            commonVerticalSpacing(),
+                            Row(
+                              children: [
+                                Expanded(flex: 3,child: commonHeaderTitle(title: "Status",height: 1.2,
+                                    fontSize: 1.2,fontWeight: 1,isChangeColor: true,color: subFontColor)),
+                                Expanded(flex: 4,child: CupertinoSwitch(
+                                  // overrides the default green color of the track
+                                  activeColor: Colors.pink.shade200,
+                                  // color of the round icon, which moves from right to left
+                                  thumbColor: blackColor,
+                                  // when the switch is off
+                                  trackColor: Colors.black12,
+                                  // boolean variable value
+                                  value: isAccStatus,
+                                  // changes the state of the switch
+                                  onChanged: (value) => setState(() => isAccStatus = value),
+                                )),
+                                Expanded(flex: 2,child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    InkWell(
+                                      onTap: (){
+                                      },
+                                      child: neuMorphicWidget(
+                                          margin: 0,
+                                          radius: 4,
+                                          child: Container(
+                                              padding: const EdgeInsets.all(3),
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(4),
+                                                  color: textBgColor
+                                              ),
+                                              child: Image(image: editImage,height: 20,width: 20,)
+                                          )
+                                      ),
                                     ),
-                                  ),
-                                  commonHorizontalSpacing(),
-                                  InkWell(
-                                    onTap: (){
-                                    },
-                                    child: neuMorphicWidget(
-                                        margin: 0,
-                                        radius: 4,
-                                        child: Container(
-                                            padding: const EdgeInsets.all(3),
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(5),
-                                                color: yellowColor
-                                            ),
-                                            child: Image(
-                                                image: deleteIconImage,
-                                                height: 22,width: 22
-                                            )
-                                        )
-                                    ),
-                                  )
-                                ],
-                              ))
-                            ],
-                          )
-                        ],
+                                    commonHorizontalSpacing(),
+                                    InkWell(
+                                      onTap: (){
+                                      },
+                                      child: neuMorphicWidget(
+                                          margin: 0,
+                                          radius: 4,
+                                          child: Container(
+                                              padding: const EdgeInsets.all(3),
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  color: yellowColor
+                                              ),
+                                              child: Image(
+                                                  image: deleteIconImage,
+                                                  height: 22,width: 22
+                                              )
+                                          )
+                                      ),
+                                    )
+                                  ],
+                                ))
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ) : Container())

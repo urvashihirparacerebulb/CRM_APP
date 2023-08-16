@@ -122,7 +122,7 @@ class _AccountListViewState extends State<AccountListView> {
                               Expanded(
                                 child: InkWell(
                                   onTap: (){
-                                    Get.to(() => const AccountDetailView());
+                                    Get.to(() => AccountDetailView(accId: AccountController.to.accountLists[index].id.toString()));
                                   },
                                   child: commonHeaderTitle(title: AccountController.to.accountLists[index].name ?? "",height: 1.2,
                                       fontSize: 1,fontWeight: 2,isChangeColor: true,color: fontColor),

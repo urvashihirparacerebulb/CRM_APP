@@ -61,6 +61,7 @@ class _ProductListViewState extends State<ProductListView> {
                         border: InputBorder.none
                     ),
                     onChanged: (String value){
+
                     },
                   ),
                 ),
@@ -101,8 +102,10 @@ class _ProductListViewState extends State<ProductListView> {
                       neuMorphicWidget(
                           shape: NeumorphicShape.concave,
                           radius: 24,
-                          margin: 0,child: Container(color: Colors.grey.shade300,
-                        height: 40,width: 40,)),
+                          margin: 0,child: Container(
+                          color: Colors.grey.shade300,
+                          height: 40,width: 40)
+                      ),
                       commonHorizontalSpacing(spacing: 12),
                       Expanded(
                         child: Column(
@@ -155,7 +158,8 @@ class _ProductListViewState extends State<ProductListView> {
                                                   borderRadius: BorderRadius.circular(5),
                                                   color: yellowColor
                                               ),
-                                              child: const Icon(Icons.circle,size: 12,color: dangerColor)
+                                              child: const Icon(Icons.circle,
+                                                  size: 12,color: dangerColor)
                                           )
                                       ),
                                     )
@@ -170,7 +174,7 @@ class _ProductListViewState extends State<ProductListView> {
                   ),
                 ),
               );
-            },))
+            }))
         ],
       ),
     );
